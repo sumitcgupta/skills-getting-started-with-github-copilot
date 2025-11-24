@@ -39,6 +39,43 @@ activities = {
         "max_participants": 30,
         "participants": ["john@mergington.edu", "olivia@mergington.edu"]
     }
+    ,
+        "Basketball Team": {
+            "description": "Competitive basketball team that practices fundamentals and competes in inter-school matches",
+            "schedule": "Weekdays, 5:00 PM - 7:00 PM",
+            "max_participants": 15,
+            "participants": ["liam@mergington.edu", "mia@mergington.edu"]
+        },
+        "Soccer Club": {
+            "description": "Coaching, drills, and friendly matches",
+            "schedule": "Saturdays, 9:00 AM - 11:00 AM",
+            "max_participants": 18,
+            "participants": ["noah@mergington.edu", "ava@mergington.edu"]
+        },
+        "Drama Club": {
+            "description": "Acting, stagecraft, and producing school plays",
+            "schedule": "Wednesdays, 4:00 PM - 6:00 PM",
+            "max_participants": 25,
+            "participants": ["sophia@mergington.edu", "ethan@mergington.edu"]
+        },
+        "Music Ensemble": {
+            "description": "Band and choir rehearsals with regular performances",
+            "schedule": "Mondays, 4:00 PM - 5:30 PM",
+            "max_participants": 30,
+            "participants": ["olivia@mergington.edu", "lucas@mergington.edu"]
+        },
+        "Math Club": {
+            "description": "Problem solving, math contests, and enrichment sessions",
+            "schedule": "Thursdays, 4:00 PM - 5:30 PM",
+            "max_participants": 20,
+            "participants": ["emma@mergington.edu", "liam@mergington.edu"]
+        },
+        "Robotics Club": {
+            "description": "Design and build robots to compete in regional competitions",
+            "schedule": "Fridays, 4:30 PM - 6:30 PM",
+            "max_participants": 12,
+            "participants": ["sophia@mergington.edu", "olivia@mergington.edu"]
+        }
 }
 
 
@@ -62,6 +99,14 @@ def signup_for_activity(activity_name: str, email: str):
     # Get the specific activity
     activity = activities[activity_name]
 
+    # validate student is not already signed up
+    if email in activity["participants"]:
+        raise HTTPException(status_code=400, detail="Student already signed up for this activity")
+    
+    # validate activity is not full
+    if len(activity["participants"]) >= activity["max_participants"]:
+        raise HTTPException(status_code=400, detail="Activity is full") 
+    
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
